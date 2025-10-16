@@ -16,6 +16,17 @@ London’s housing market is large, heterogeneous, and sensitive to macro (rates
 
 ---
 
+## Machine Learning Models
+
+
+* **Fixed-Effects OLS (Hedonic)** — Linear model with **borough** and **month** fixed effects to capture spatial and temporal heterogeneity; optional **log-price** target for variance stabilization; robust SEs recommended.
+* **Regularized Linear Models** — **Ridge**, **Lasso**, and **ElasticNet** on one-hot encoded categoricals to handle multicollinearity and shrink high-cardinality dummies; hyperparameters tuned via **blocked time-series CV**.
+* **Tree Ensembles** — **RandomForestRegressor** as a variance-reduction baseline; **Gradient Boosting** via **LightGBM/XGBoost** for nonlinearities and interaction effects; early stopping on a time-ordered validation fold.
+* **CatBoost Regressor** — Native handling of categorical features (no heavy one-hot), strong default performance on mixed numeric/categorical tabular data; compares directly to fixed-effects OLS for explainability vs. accuracy trade-offs.
+
+**Evaluation setup:** temporal split (**train 2018–2021 / test 2022**), metrics **RMSE/MAE/R²/MAPE**, blocked time-series CV for tuning; diagnostics include residual stratification by borough, property type, and bedroom count, plus error vs. price-quantile analysis.
+
+
 ## Data & Sources
 
 * **UK Price Paid** (2018–2022; nationwide → filtered to London)
